@@ -1,0 +1,24 @@
+# Azure DevOps CI/CD Pipeline YAML
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: TerraformInstaller@1
+  displayName: 'Install Terraform'
+  inputs:
+    terraformVersion: '1.4.6'
+
+- script: terraform init
+  displayName: 'Terraform Init'
+
+- script: terraform validate
+  displayName: 'Terraform Validate'
+
+- script: terraform plan -out=tfplan
+  displayName: 'Terraform Plan'
+
+- script: terraform apply -auto-approve tfplan
+  displayName: 'Terraform Apply'
